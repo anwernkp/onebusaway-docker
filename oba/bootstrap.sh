@@ -9,7 +9,7 @@ if [ -n "$GTFS_URL" ]; then
     mkdir -p /bundle
     wget -O /bundle/gtfs.zip "$GTFS_URL"
     cd /bundle \
-        && java -Xss4m -Xmx2g \
+        && java -Xss4m -Xmx3g \
             -jar /oba/libs/onebusaway-transit-data-federation-builder-withAllDependencies.jar \
             ./gtfs.zip \
             .
@@ -29,7 +29,7 @@ API_XML_SOURCE="/oba/config/onebusaway-api-webapp-data-sources.xml.hbs"
 API_XML_DESTINATION="$CATALINA_HOME/webapps/ROOT/WEB-INF/classes/data-sources.xml"
 
 hbs_renderer -input "$API_XML_SOURCE" \
-             -json '{"TEST_API_KEY": "'$TEST_API_KEY'", "JDBC_DRIVER": "'$JDBC_DRIVER'"}' \
+             -json '{"TEST_API_KEY": "'$TEST_API_KEY'", "JDBC_DRIVER": "'$JDBC_DRIVER'", "JDBC_URL": "'$JDBC_URL'", "JDBC_USER": "'$JDBC_USER'", "JDBC_PASSWORD": "'$JDBC_PASSWORD'"}' \
              -output "$API_XML_DESTINATION"
 
 #####
@@ -55,7 +55,7 @@ else
 fi
 
 hbs_renderer -input "$FEDERATION_XML_SOURCE" \
-             -json '{"GTFS_RT_AVAILABLE": "'$GTFS_RT_AVAILABLE'", "TRIP_UPDATES_URL": "'$TRIP_UPDATES_URL'", "VEHICLE_POSITIONS_URL": "'$VEHICLE_POSITIONS_URL'", "ALERTS_URL": "'$ALERTS_URL'", "REFRESH_INTERVAL": "'$REFRESH_INTERVAL'", "AGENCY_ID": "'$AGENCY_ID'", "HAS_API_KEY": "'$HAS_API_KEY'", "FEED_API_KEY": "'$FEED_API_KEY'", "FEED_API_VALUE": "'$FEED_API_VALUE'"}' \
+             -json '{"GTFS_RT_AVAILABLE": "'$GTFS_RT_AVAILABLE'", "TRIP_UPDATES_URL": "'$TRIP_UPDATES_URL'", "VEHICLE_POSITIONS_URL": "'$VEHICLE_POSITIONS_URL'", "ALERTS_URL": "'$ALERTS_URL'", "REFRESH_INTERVAL": "'$REFRESH_INTERVAL'", "AGENCY_ID": "'$AGENCY_ID'", "HAS_API_KEY": "'$HAS_API_KEY'", "FEED_API_KEY": "'$FEED_API_KEY'", "FEED_API_VALUE": "'$FEED_API_VALUE'", "JDBC_URL": "'$JDBC_URL'", "JDBC_DRIVER": "'$JDBC_DRIVER'", "JDBC_USER": "'$JDBC_USER'", "JDBC_PASSWORD": "'$JDBC_PASSWORD'"}' \
              -output "$FEDERATION_XML_DESTINATION"
 
 #####
